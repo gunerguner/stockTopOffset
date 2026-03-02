@@ -1,4 +1,3 @@
-
 """数据分析与结论"""
 
 from typing import Optional
@@ -31,4 +30,3 @@ def parse_stock_info(ticker: str, name: str, data: Optional[FetchResult], is_sis
         'ath_days': data.get('ath_days') or 0,
         'conclusion': conclusion, 'is_sister': is_sister,
     }
-

@@ -30,13 +30,16 @@ def _fetch_one(ticker: str) -> Optional[FetchResult]:
     return None
 
 
-def fetch_all_stocks() -> Dict[str, Optional[FetchResult]]:
-    """并发获取所有股票数据"""
-    total = len(STOCKS)
-    print(f"正在获取 {total} 只股票数据...")
+def fetch_all_stocks(assets=None) -> Dict[str, Optional[FetchResult]]:
+    """并发获取所有资产数据"""
+    if assets is None:
+        from config import STOCKS as assets
+    total = len(assets)
+    asset_type = "加密货币" if assets and "BTC" in assets[0][0] else "股票"
+    print(f"正在获取 {total} 只{asset_type}数据...")
     result: Dict[str, Optional[FetchResult]] = {}
     with ThreadPoolExecutor(max_workers=min(total, MAX_WORKERS)) as ex:
-        fut_to_ticker = {ex.submit(_fetch_one, t): t for t, _ in STOCKS}
+        fut_to_ticker = {ex.submit(_fetch_one, t): t for t, _ in assets}
         for fut in as_completed(fut_to_ticker):
             result[fut_to_ticker[fut]] = fut.result()
     ok = sum(1 for v in result.values() if v is not None)

@@ -1,6 +1,5 @@
 """配置"""
 
-
 SEVEN_SISTERS = {'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA'}
 
 STOCKS = [
@@ -9,6 +8,11 @@ STOCKS = [
     ('INTC', '英特尔'), ('AMD', 'AMD'), ('QCOM', '高通'), ('MU', '美光'),
     ('IBM', 'IBM'), ('AVGO', '博通'), ('ORCL', '甲骨文'), ('ASML', '阿斯麦'),
     ('ADBE', 'Adobe'), ('NFLX', '奈飞'), ('CSCO', '思科'),
+]
+
+CRYPTOS = [
+    ('BTC-USD', '比特币'),
+    ('ETH-USD', '以太坊'),
 ]
 
 AI_API_KEY = "8d60ba20a994450c8b644dcbbdd8cbfc.u1q3pJUurAE2j9YK"
@@ -21,4 +25,3 @@ REPORT_DIR = "report"
 MAX_WORKERS = 8
 MAX_RETRY_TIMES = 1
 RETRY_DELAY_SECONDS = 2
-

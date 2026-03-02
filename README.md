@@ -1,1 +1,134 @@
-# stockTopOffset
+# Stock Top Offset - 美股科技股分析工具
+
+一个用于分析美股科技股和加密货币价格位置的 Python 工具。自动获取实时股价，计算与历史最高价的偏离程度，并生成 AI 分析报告。
+
+## 功能特性
+
+- **实时数据获取**: 使用 yfinance 获取美股和加密货币实时行情
+- **价格偏离分析**: 计算当前价格与历史最高价的百分比偏离
+- **AI 智能分析**: 调用智谱 AI 生成专业的投资分析报告
+- **彩色表格输出**: 终端友好的彩色表格展示，区分科技七姐妹与其他股票
+- **自动定时报告**: 支持 GitHub Actions 定时运行并生成报告
+
+## 支持的股票
+
+### 科技七姐妹 (突出显示)
+- AAPL (苹果)、MSFT (微软)、GOOGL (谷歌)、AMZN (亚马逊)
+- NVDA (英伟达)、META (Meta)、TSLA (特斯拉)
+
+### 其他科技股
+TSM (台积电)、INTC (英特尔)、AMD、QCOM (高通)、MU (美光)、IBM、AVGO (博通)、ORCL (甲骨文)、ASML (阿斯麦)、ADBE (Adobe)、NFLX (奈飞)、CSCO (思科)
+
+### 加密货币
+BTC-USD (比特币)、ETH-USD (以太坊)
+
+## 快速开始
+
+### 安装依赖
+
+```bash
+# 创建虚拟环境
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+### 配置
+
+编辑 `config.py` 文件，配置你的智谱 AI API Key:
+
+```python
+AI_API_KEY = "your-api-key-here"
+```
+
+### 运行分析
+
+```bash
+python main.py
+```
+
+## 输出示例
+
+```
++------------+------------+--------------+--------------+--------------+--------------+--------------+----------------+
+| 股票代码   | 公司名称   |   市值 (B)   |   实时价格   |  历史最高价  |  差异百分比  |  距最高天数  | 分析结论       |
++------------+------------+--------------+--------------+--------------+--------------+--------------+----------------+
+| AAPL       | 苹果       |        3.50  |        185.0 |        199.6 |        -7.31% | 45天         | 适度回调       |
+| NVDA       | 英伟达     |        2.20  |        875.0 |        974.0 |       -10.16% | 12天         | 显著回调       |
+| BTC-USD    | 比特币     |        1.30  |      67500.0 |      73750.0 |        -8.47% | 30天         | 适度回调       |
++------------+------------+--------------+--------------+--------------+--------------+--------------+----------------+
+```
+
+AI 分析报告将保存在 `report/YYYY-MM-DD.txt` 文件中。
+
+## GitHub Actions 自动运行
+
+项目配置了 GitHub Actions 工作流，可以定时自动运行分析:
+
+- **定时触发**: 每周一至周五北京时间 08:30 自动运行
+- **手动触发**: 支持通过 Actions 页面手动触发
+
+### 配置 GitHub Actions
+
+1. 在 GitHub 仓库设置中添加 Secrets:
+   - `AI_API_KEY`: 你的智谱 AI API Key
+
+2. 工作流文件位置: `.github/workflows/stock_analysis.yml`
+
+## 项目结构
+
+```
+stockTopOffset/
+├── main.py                 # 程序入口
+├── config.py               # 配置文件（股票列表、API Key等）
+├── models.py               # 数据模型定义
+├── analyzer.py             # 数据分析和结论生成
+├── ai_service.py           # AI 分析服务
+├── display.py              # 表格格式化显示
+├── prompt.txt              # AI 分析提示词模板
+├── requirements.txt        # Python 依赖
+├── report/                 # 生成的分析报告目录
+└── .github/workflows/      # GitHub Actions 配置
+```
+
+## 自定义配置
+
+### 添加/修改股票
+
+在 `config.py` 中编辑 `STOCKS` 列表:
+
+```python
+STOCKS = [
+    ('AAPL', '苹果'),
+    ('TSLA', '特斯拉'),
+    # 添加更多股票...
+]
+```
+
+### 修改 AI 模型
+
+在 `config.py` 中修改 AI 配置:
+
+```python
+AI_MODEL = "glm-4.5-air"  # 或其他智谱AI模型
+AI_TEMPERATURE = 0.7
+AI_MAX_TOKENS = 4096
+```
+
+## 依赖项
+
+- yfinance >= 0.2.36 - Yahoo Finance 数据获取
+- pandas >= 2.0.0 - 数据处理
+- tabulate >= 0.9.0 - 表格格式化
+- wcwidth >= 0.2.0 - 字符宽度计算
+- zai-sdk - 智谱 AI SDK
+
+## 免责声明
+
+本项目仅供参考学习，不构成任何投资建议。股市有风险，投资需谨慎。
+
+## License
+
+MIT License

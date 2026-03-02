@@ -1,5 +1,11 @@
 """配置"""
 
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 SEVEN_SISTERS = {'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA'}
 
 STOCKS = [
@@ -15,7 +21,7 @@ CRYPTOS = [
     ('ETH-USD', '以太坊'),
 ]
 
-AI_API_KEY = "8d60ba20a994450c8b644dcbbdd8cbfc.u1q3pJUurAE2j9YK"
+AI_API_KEY = os.environ.get("AI_API_KEY", "")
 AI_MODEL = "glm-4.5-air"
 AI_TEMPERATURE = 0.7
 AI_MAX_TOKENS = 4096

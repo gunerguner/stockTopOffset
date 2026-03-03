@@ -62,7 +62,11 @@ jobs:
 
           # 创建或切换到 data 分支
           git fetch origin data:data 2>/dev/null || true
-          git checkout -b data origin/data 2>/dev/null || git checkout -b data
+          if git show-ref --verify --quiet refs/heads/data; then
+            git checkout data
+          else
+            git checkout -b data origin/data 2>/dev/null || git checkout -b data
+          fi
 
           # 创建以日期命名的文件夹（年/月结构）
           YEAR=$(echo $DATE | cut -d'-' -f1)

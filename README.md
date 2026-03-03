@@ -1,6 +1,6 @@
-# Stock Top Offset - 美股科技股分析工具
+# Stock Top Offset - 资产价格分析工具
 
-一个用于分析美股科技股和加密货币价格位置的 Python 工具。自动获取实时股价，计算与历史最高价的偏离程度，并生成 AI 分析报告。
+一个用于分析美股科技股、贵金属和加密货币价格位置的 Python 工具。自动获取实时价格，计算与历史最高价的偏离程度，并生成 AI 分析报告。
 
 ## 功能特性
 
@@ -21,6 +21,9 @@ TSM (台积电)、INTC (英特尔)、AMD、QCOM (高通)、MU (美光)、IBM、A
 
 ### 加密货币
 BTC-USD (比特币)、ETH-USD (以太坊)
+
+### 贵金属
+GC=F (黄金)、SI=F (白银)
 
 ## 快速开始
 
@@ -46,7 +49,26 @@ AI_API_KEY = "your-api-key-here"
 ### 运行分析
 
 ```bash
+# 默认分析美股
 python main.py
+
+# 只分析贵金属（黄金、白银）
+python main.py -m
+
+# 只分析加密货币（比特币、以太坊）
+python main.py -c
+
+# 分析美股和贵金属
+python main.py -s -m
+
+# 分析所有类型
+python main.py -s -m -c
+
+# 启用 AI 智能分析
+python main.py --ai
+
+# 不显示颜色（适合输出到文件）
+python main.py --no-color
 ```
 
 ## 输出示例

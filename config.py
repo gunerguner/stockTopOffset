@@ -21,6 +21,11 @@ CRYPTOS = [
     ('ETH-USD', '以太坊'),
 ]
 
+METALS = [
+    ('GC=F', '黄金'),
+    ('SI=F', '白银'),
+]
+
 AI_API_KEY = os.environ.get("AI_API_KEY", "")
 AI_MODEL = "glm-4.5-air"
 AI_TEMPERATURE = 0.7

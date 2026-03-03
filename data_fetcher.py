@@ -33,7 +33,7 @@ def _fetch_one(ticker: str) -> Optional[FetchResult]:
 def fetch_all_stocks(assets=None) -> Dict[str, Optional[FetchResult]]:
     """并发获取所有资产数据"""
     if assets is None:
-        from config import STOCKS as assets
+        assets = STOCKS
     total = len(assets)
     asset_type = "加密货币" if assets and "BTC" in assets[0][0] else "股票"
     print(f"正在获取 {total} 只{asset_type}数据...")

@@ -143,9 +143,10 @@ AI_MAX_TOKENS = 4096
 
 - yfinance >= 0.2.36 - Yahoo Finance 数据获取
 - pandas >= 2.0.0 - 数据处理
-- tabulate >= 0.9.0 - 表格格式化
-- wcwidth >= 0.2.0 - 字符宽度计算
+- python-dotenv >= 1.0.0 - 环境变量加载（`from dotenv import load_dotenv`）
 - zai-sdk - 智谱 AI SDK
+
+说明：项目当前使用了自定义表格渲染逻辑（`display.py`），未依赖 `tabulate`、`wcwidth`。
 
 ## 免责声明
 

@@ -26,7 +26,7 @@ def parse_stock_info(ticker: str, name: str, data: Optional[FetchResult], is_sis
     return {
         'ticker': ticker, 'name': name, 'current_price': cur, 'all_time_high': ath,
         'price_diff': cur - ath, 'percentage_diff': diff_pct,
-        'market_cap': float(info.get('marketCap') or 0),
+        'market_cap_usd': float(info.get('marketCap') or 0),
         'ath_days': data.get('ath_days') or 0,
         'conclusion': conclusion, 'is_sister': is_sister,
     }

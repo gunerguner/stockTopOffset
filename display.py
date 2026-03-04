@@ -1,10 +1,10 @@
-
 """显示与表格格式化"""
 
 import re
 from typing import List
 from unicodedata import east_asian_width
 
+from formatters import to_billions
 from models import StockData, Color
 
 _CONCLUSION_COLOR = {
@@ -65,10 +65,11 @@ def print_table(results: List[StockData], use_color: bool = True) -> None:
         sis = r.get('is_sister', False)
         con = str(r['conclusion'])
         con_cell = (_CONCLUSION_COLOR.get(con, '') + con + (Color.RESET if con in _CONCLUSION_COLOR else '')) if use_color else con
+        market_cap_b = f"{to_billions(r['market_cap_usd']):.2f}"
         cells = [
             (_cell(str(r['ticker']), sis) if use_color else str(r['ticker'])),
             (_cell(str(r['name']), sis) if use_color else str(r['name'])),
-            (_cell(f"{r['market_cap'] / 1e9:.2f}", sis) if use_color else f"{r['market_cap'] / 1e9:.2f}"),
+            (_cell(market_cap_b, sis) if use_color else market_cap_b),
             (_cell(f"{r['current_price']:.2f}", sis) if use_color else f"{r['current_price']:.2f}"),
             (_cell(f"{r['all_time_high']:.2f}", sis) if use_color else f"{r['all_time_high']:.2f}"),
             (_cell(f"{r['percentage_diff']:.2f}%", sis) if use_color else f"{r['percentage_diff']:.2f}%"),
@@ -77,4 +78,3 @@ def print_table(results: List[StockData], use_color: bool = True) -> None:
         ]
         print(row(cells))
     print(sep)
-

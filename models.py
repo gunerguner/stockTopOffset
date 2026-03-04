@@ -1,4 +1,3 @@
-
 """数据模型"""
 
 from typing import TypedDict, Optional
@@ -11,7 +10,7 @@ class StockData(TypedDict):
     all_time_high: float
     price_diff: float
     percentage_diff: float
-    market_cap: float
+    market_cap_usd: float
     ath_days: int
     conclusion: str
     is_sister: bool

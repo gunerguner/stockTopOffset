@@ -1,4 +1,3 @@
-
 """AI 分析服务"""
 
 from datetime import datetime
@@ -8,6 +7,7 @@ from typing import List, Optional
 from zai import ZhipuAiClient
 
 from config import AI_API_KEY, AI_MODEL, AI_TEMPERATURE, AI_MAX_TOKENS, PROMPT_FILE, REPORT_DIR
+from formatters import to_billions
 from models import StockData
 
 
@@ -20,7 +20,7 @@ def _get_client() -> Optional[ZhipuAiClient]:
 
 def prepare_analysis_data(results: List[StockData]) -> str:
     return "\n".join(
-        f"{r['ticker']} ({r['name']}): 市值{r['market_cap']:.2f}B, 当前价{r['current_price']:.2f}, "
+        f"{r['ticker']} ({r['name']}): 市值{to_billions(r['market_cap_usd']):.2f}B, 当前价{r['current_price']:.2f}, "
         f"历史最高{r['all_time_high']:.2f}, 回调{r['percentage_diff']:.2f}%, 距最高{r['ath_days']}天"
         for r in results
     )

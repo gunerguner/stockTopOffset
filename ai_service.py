@@ -3,14 +3,19 @@
 
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from zai import ZhipuAiClient
 
 from config import AI_API_KEY, AI_MODEL, AI_TEMPERATURE, AI_MAX_TOKENS, PROMPT_FILE, REPORT_DIR
 from models import StockData
 
-_client = ZhipuAiClient(api_key=AI_API_KEY)
+
+def _get_client() -> Optional[ZhipuAiClient]:
+    """按需创建 AI 客户端，未配置密钥时返回 None。"""
+    if not AI_API_KEY.strip():
+        return None
+    return ZhipuAiClient(api_key=AI_API_KEY)
 
 
 def prepare_analysis_data(results: List[StockData]) -> str:
@@ -23,8 +28,12 @@ def prepare_analysis_data(results: List[StockData]) -> str:
 
 def analyze_with_ai(stock_data: str) -> str:
     try:
+        client = _get_client()
+        if client is None:
+            return "未配置 AI_API_KEY，跳过 AI 分析"
+
         prompt = Path(PROMPT_FILE).read_text(encoding='utf-8').format(stock_data=stock_data)
-        resp = _client.chat.completions.create(
+        resp = client.chat.completions.create(
             model=AI_MODEL, messages=[{"role": "user", "content": prompt}],
             temperature=AI_TEMPERATURE, max_tokens=AI_MAX_TOKENS,
         )
@@ -48,4 +57,3 @@ def save_ai_analysis(analysis: str) -> str:
         return str(path)
     except Exception as e:
         return f"保存失败: {e!s}"
-

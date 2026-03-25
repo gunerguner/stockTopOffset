@@ -50,7 +50,7 @@ def save_ai_analysis(analysis: str) -> str:
     path = report_dir / f"{datetime.now().strftime('%Y-%m-%d')}.txt"
     try:
         path.write_text(
-            f"美股价格分析报告 - {path.stem}\n{'=' * 100}\n\n{analysis}\n\n"
+            f"分析报告 - {path.stem}\n{'=' * 100}\n\n{analysis}\n\n"
             f"{'=' * 100}\n生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n",
             encoding='utf-8',
         )

@@ -18,10 +18,23 @@ def _fetch_one(ticker: str) -> Optional[FetchResult]:
             t = yf.Ticker(ticker)
             info, hist = t.info, t.history(period='6y')
             ath_days = None
+            prev_close = None
+            last_week_close = None
             if hist is not None and not hist.empty:
                 ath_naive = hist['High'].idxmax().tz_localize(None)
                 ath_days = (datetime.now() - ath_naive).days
-            return {'info': info, 'ath_days': ath_days}
+                # 提取前一交易日收盘价（用于计算日涨跌）
+                if len(hist) >= 2:
+                    prev_close = float(hist['Close'].iloc[-2])
+                # 提取上周收盘价（约5个交易日前，用于计算周涨跌）
+                if len(hist) >= 6:
+                    last_week_close = float(hist['Close'].iloc[-6])
+            return {
+                'info': info,
+                'ath_days': ath_days,
+                'prev_close': prev_close,
+                'last_week_close': last_week_close
+            }
         except Exception:
             if attempt < MAX_RETRY_TIMES - 1:
                 time.sleep(RETRY_DELAY_SECONDS)

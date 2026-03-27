@@ -6,8 +6,8 @@ on:
     # 美股收盘后 1 小时 = 美东时间 17:00
     # 转换为 UTC 时间：21:00 或 22:00 (取决于夏令时)
     #  cron 格式：分 时 日 月 星期 (UTC 时间)
-    # 只在美股交易日运行（周一到周五）
-    - cron: '30 22 * * 1-5'
+    # 每周五运行（美股收盘后）
+    - cron: '30 22 * * 5'
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
           DATE=$(TZ='America/New_York' date +%Y-%m-%d)
           echo "Running analysis for date: $DATE"
           # 运行主脚本并保存输出到 txt 文件
-          python main.py --no-color 2>&1 | tee "output/${DATE}.txt"
+          python main.py --no-color --weekly 2>&1 | tee "output/${DATE}.txt"
 
       - name: Configure Git
         run: |

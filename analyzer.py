@@ -23,10 +23,24 @@ def parse_stock_info(ticker: str, name: str, data: Optional[FetchResult], is_sis
         if abs_pct < thresh:
             conclusion = label
             break
+
+    # 计算日涨跌幅
+    daily_change = None
+    prev_close = data.get('prev_close')
+    if prev_close and prev_close > 0:
+        daily_change = (cur - prev_close) / prev_close * 100
+
+    # 计算周涨跌幅
+    weekly_change = None
+    last_week_close = data.get('last_week_close')
+    if last_week_close and last_week_close > 0:
+        weekly_change = (cur - last_week_close) / last_week_close * 100
+
     return {
         'ticker': ticker, 'name': name, 'current_price': cur, 'all_time_high': ath,
         'price_diff': cur - ath, 'percentage_diff': diff_pct,
         'market_cap_usd': float(info.get('marketCap') or 0),
         'ath_days': data.get('ath_days') or 0,
         'conclusion': conclusion, 'is_sister': is_sister,
+        'weekly_change': weekly_change, 'daily_change': daily_change,
     }

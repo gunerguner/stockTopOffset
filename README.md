@@ -40,10 +40,18 @@ pip install -r requirements.txt
 
 ### 配置
 
-编辑 `config.py` 文件，配置你的智谱 AI API Key:
+项目通过环境变量读取智谱 AI Key，推荐使用 `.env`：
 
-```python
-AI_API_KEY = "your-api-key-here"
+```bash
+cp .env.example .env  # 如果你有模板文件
+# 或手动创建 .env 并写入
+echo "AI_API_KEY=your-api-key-here" >> .env
+```
+
+也可以直接在当前 shell 导出：
+
+```bash
+export AI_API_KEY="your-api-key-here"
 ```
 
 ### 运行分析
@@ -67,9 +75,20 @@ python main.py -s -m -c
 # 启用 AI 智能分析
 python main.py --ai
 
+# 显示周涨跌幅（约 5 个交易日）
+python main.py -w
+
+# 显示日涨跌幅（前一交易日对比）
+python main.py -d
+
+# 同时显示周/日涨跌幅并启用 AI 分析
+python main.py -s -m -c -w -d --ai
+
 # 不显示颜色（适合输出到文件）
 python main.py --no-color
 ```
+
+> 说明：不传 `-s/-m/-c` 时，默认分析美股（`stocks`）。
 
 ## 输出示例
 
@@ -90,6 +109,8 @@ AI 分析报告将保存在 `report/YYYY-MM-DD.txt` 文件中。
 
 - 内部统一使用 `market_cap_usd` 表示美元单位市值。
 - 展示层与 AI 分析层统一通过 `to_billions(value)` 转换为 `B`（十亿美元）单位，避免重复手写换算。
+- `daily_change`：相对前一交易日收盘价的涨跌幅（%）。
+- `weekly_change`：相对约 5 个交易日前收盘价的涨跌幅（%）。
 
 ## GitHub Actions 自动运行
 
@@ -100,7 +121,7 @@ AI 分析报告将保存在 `report/YYYY-MM-DD.txt` 文件中。
 
 ### 配置 GitHub Actions
 
-1. 在 GitHub 仓库设置中添加 Secrets:
+1. 在 GitHub 仓库设置中添加 Secrets（可选）:
    - `AI_API_KEY`: 你的智谱 AI API Key
 
 2. 工作流文件位置: `.github/workflows/stock_analysis.yml`
@@ -143,6 +164,16 @@ STOCKS = [
 AI_MODEL = "glm-4.5-air"  # 或其他智谱AI模型
 AI_TEMPERATURE = 0.7
 AI_MAX_TOKENS = 4096
+```
+
+### 调整并发与重试
+
+在 `config.py` 中可调整：
+
+```python
+MAX_WORKERS = 8
+MAX_RETRY_TIMES = 1
+RETRY_DELAY_SECONDS = 2
 ```
 
 ## 依赖项
